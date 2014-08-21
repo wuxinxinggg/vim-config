@@ -25,6 +25,52 @@ set fileencodings=utf-8,chinese,latin-1
 "configure tags - add additional tags here or comment out not-used ones
 set tags+=~/.vim/tags/cpp
 set tags+=./vimtags
+
+"Highlight current line
+"GUI Mode
+"
+set cursorline
+hi CursorLine  gui=underline,bold,standout guibg=NONE guifg=NONE
+hi CursorColumn gui=underline,bold,standout guibg=NONE guifg=NONE
+
+"Cterm Mode
+"set cursorline
+"hi CursorLine  cterm=underline,bold ctermbg=darkred ctermfg=white
+"hi CursorColumn cterm=underline,bold ctermbg=darkred ctermfg=white
+"
+"End Highlight current line
+
+"Highlight search result
+set nohls
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" cscope setting
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if has("cscope")
+  set csprg=/usr/bin/cscope
+  set csto=1
+  set cst
+  set nocsverb
+  " add any database in current directory
+  if filereadable("cscope.out")
+      cs add cscope.out
+  endif
+  set csverb
+endif
+
+nmap <C-@>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+nmap <C-@>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+nmap <C-@>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+nmap <C-@>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+nmap <C-@>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+nmap <C-@>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+nmap <C-@>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
+nmap <C-@>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" End cscope setting
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 " taglist
 "let Tlist_Show_One_File = 1            "不同时显示多个文件的tag，只显示当前文件的
 "let Tlist_Exit_OnlyWindow = 1          "如果taglist窗口是最后一个窗口，则退出vim
@@ -85,14 +131,27 @@ nmap <C-J> <C-W>j
 nmap <C-K> <C-W>k
 nmap <C-L> <C-W>l
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" CtrlP setting
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"the directory with ctags is the mark of root directory
+let g:ctrlp_root_markers = ['tags']
+let g:ctrlp_working_path_mode = 'c'
+
+" Enable cache
+let g:ctrlp_clear_cache_on_exit = 1
+" Cache directory
+let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
+
+" map key to run CtrlP
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 
-map ff :call Search_Word()<CR>:copen<CR>
-function Search_Word()
-	let w = expand("<cword>") " 在当前光标位置抓词
-	execute "vimgrep " w " *"
-endfunction
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" End CtrlP setting
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 nmap <F4> :cn<cr>
 nmap <F3> :cp<cr>
@@ -124,7 +183,7 @@ nmap <F9>   :TrinityToggleSourceExplorer<CR>
 nmap <F10>  :TrinityToggleTagList<CR> 
 
 " Open and close the NERD_tree.vim separately 
-nmap <F11>  :TrinityToggleNERDTree<CR> 
+nmap <F7>  :TrinityToggleNERDTree<CR> 
 
 "
 " Setting for python
@@ -135,8 +194,6 @@ let g:pymode_lint_write = 0
 
 "let g:pymode_run = 1
 "let g:pymode_run_key = '<leader>r'
-
-
 
 " Load rope plugin
 let g:pymode_rope = 1
